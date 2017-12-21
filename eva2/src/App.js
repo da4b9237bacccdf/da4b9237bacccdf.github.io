@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 
 import MakeSelector from './components/MakeSelector/MakeSelector.js';
+import ModelSelector from './components/ModelSelector/ModelSelector.js';
 
 const url = 'https://www.edmunds.com/api/vehicle/v2/makes?fmt=json&state=NEW,USED,FUTURE&view=full';
 
@@ -9,7 +10,8 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      makes: []
+      makes: [],
+      models: [],
     }
   }
 
@@ -23,6 +25,17 @@ class App extends Component {
     });
   }
 
+  handleMakeSelect(e) {
+    const models = this.state.models || [];
+    this.state.makes.forEach(make => {
+      if (make.id === +e.target.value) {
+        this.setState({
+          models: make.models
+        });
+      }
+    })
+  }
+
 
   render() {
     return (
@@ -30,9 +43,14 @@ class App extends Component {
         <header className="App-header">
           <h1 className="App-title">Edmunds Vehicle Appraisal</h1>
         </header>
-        <p className="App-intro">
-          <MakeSelector makes={this.state.makes}></MakeSelector>
-        </p>
+        <div className="App-intro">
+          <div>
+            <MakeSelector makes={this.state.makes} onChange={this.handleMakeSelect.bind(this)}></MakeSelector>
+          </div>
+          <div>
+            {this.state.models.length > 0 ? (<ModelSelector models={this.state.models}></ModelSelector>) : null}
+          </div>
+        </div>
       </div>
     );
   }

@@ -10,7 +10,12 @@ const MakeSelector = (props) => {
   ));
 
   return (
-    <select className="selector">{makesSelector}</select>
+    <select
+      className="selector"
+      onChange={(e) => props.onChange(e)}
+    >
+      {makesSelector}
+    </select>
   );
 }
 
